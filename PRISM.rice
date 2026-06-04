@@ -1,0 +1,16 @@
+{
+	"seperator": "",
+	"fileseperator": "",
+	"prefix": "",
+	"suffix": "",
+	"foldericon": "",
+	"winicon": "",
+	"lnxicon": "",
+	"bgcolor_os": "win11",
+	"bgcolor_shell": "azure",
+	"bgcolor_path": "win10",
+	"fgcolor_os": "white",
+	"fgcolor_shell": "white",
+	"fgcolor_path": "white",
+	"shellname": "eSh"
+}
