@@ -1,0 +1,49 @@
+# PRISM - Prompt Rendering Integration & Style Manager
+$config = Get-Content (Join-Path $global:eShScriptRoot "PRISM.rice") -Raw | ConvertFrom-Json
+$rescol = "$($color.reset)"
+$bgos = CTBTool $config.bgcolor_os
+$bgosf= $color[$config.bgcolor_os]
+$bgsh = CTBTool $config.bgcolor_shell
+$bgshf= $color[$config.bgcolor_shell]
+$bgfs = CTBTool $config.bgcolor_path
+$bgfsf= $color[$config.bgcolor_path]
+$fgos = $color[$config.fgcolor_os]
+$fgsh = $color[$config.fgcolor_shell]
+$fgfs = $color[$config.fgcolor_path]
+# $iconfs = $config.foldericon #too hard to add
+if ($global:LIDS) {
+	$script:iconos = $config.lnxicon
+} else {
+	if ($IsWindows) {
+		$script:iconos = $config.winicon
+	} else {
+		$script:iconos = $config.lnxicon
+	}
+}
+$prefix = $config.prefix
+$suffix = $config.suffix
+$sep = $config.seperator
+$sepfs = $config.fileseperator
+$shname = $config.shellname
+function prompt {
+	if ($global:LIDS) {
+		$realPath = (Get-Location).Path
+		if ($IsWindows -or $PSVersionTable.PSEdition -eq "Desktop") {
+			$linuxPath = Convert-ToLinuxPath $realPath
+		} else {
+			$linuxPath = $realPath
+		}
+		"$($bgosf)$prefix$rescol$($bgos)$($fgos)$script:iconos$rescol$($bgsh)$($bgosf)$sep$rescol$($bgsh)$($fgsh)$shname$rescol$($bgshf)$($bgfs)$sep$rescol$($bgfs)$($fgfs)$linuxPath$rescol$($bgfsf)$sep$rescol"
+	} else {
+		"$($bgosf)$prefix$rescol$($bgos)$($fgos)$script:iconos$rescol$($bgsh)$($bgosf)$sep$rescol$($bgsh)$($fgsh)$shname$rescol$($bgshf)$($bgfs)$sep$rescol$($bgfs)$($fgfs)$pwd$rescol$($bgfsf)$sep$rescol"
+	}
+}
+
+function delid {
+	$global:LIDS = $false
+	$script:iconos = $config.winicon
+}
+function relid {
+	$global:LIDS = $true
+	$script:iconos = $config.lnxicon
+}

@@ -1,0 +1,31 @@
+set-xtpath "Prism" $global:eShscriptroot
+$emberRicePath = Join-Path $global:emberRoot "emberCore\ember.rice"
+$emberRice = Get-Content $emberRicePath -Raw | ConvertFrom-Json
+$emberRice | Add-Member -NotePropertyName "prism" -NotePropertyValue "prism" -Force # key = mod path, value = mod name
+$emberRice | ConvertTo-Json | Set-Content $emberRicePath
+if (-not (test-path (join-path $global:eShscriptroot "PRISM.rice"))) {
+@"
+{
+	"seperator": "",
+	"fileseperator": "",
+	"prefix": "",
+	"suffix": "",
+	"foldericon": "",
+	"winicon": "",
+	"lnxicon": "",
+	"bgcolor_os": "win11",
+	"bgcolor_shell": "azure",
+	"bgcolor_path": "win10",
+	"fgcolor_os": "white",
+	"fgcolor_shell": "white",
+	"fgcolor_path": "white",
+	"shellname": "eSh"
+}
+"@ | Set-Content (Join-Path $global:eShScriptRoot "PRISM.rice")
+write-host "Created PRISM.rice"
+}
+esx PRISM prism -erroraction silentlycontinue
+write-host "Successfully installed PRISM Addon" -foreground green
+write-host "Press Enter to Exit"
+read-host
+exit
